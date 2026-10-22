@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#09060d" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>IRON FIST 5 — Dragon Arena</title>
+  <meta name="description" content="A cinematic 3D martial arts fighter built for phones and tablets. Original fighters, touch controls, best-of-three dragon tournament." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2307050b'/%3E%3Ctext x='32' y='46' font-family='Arial Black,Arial' font-size='42' font-weight='900' text-anchor='middle' fill='%23f5c15c'%3E5%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="stage"></canvas>
+    <div class="vignette"></div>
+    <div class="grain"></div>
+
+    <div id="loading" class="screen show">
+      <div class="loading-mark">IF<span>5</span></div>
+      <div class="loading-title">DRAGON ARENA</div>
+      <div class="loading-track"><i></i></div>
+      <div class="loading-copy">Forging the arena…</div>
+    </div>
+
+    <section id="menu" class="screen">
+      <div class="brand">
+        <div class="brand-eyebrow">ORIGINAL 3D FIGHTER</div>
+        <h1 class="logo"><span>IRON</span><span>FIST</span><em>5</em></h1>
+        <div class="brand-sub">D R A G O N &nbsp; A R E N A</div>
+        <div class="brand-rule"><i></i><b></b><i></i></div>
+      </div>
+      <div class="menu-actions">
+        <button id="btn-enter" class="btn btn-primary">ENTER THE ARENA</button>
+        <div class="menu-row">
+          <button id="btn-sound" class="btn btn-ghost" aria-pressed="true">SOUND ON</button>
+          <button id="btn-fullscreen" class="btn btn-ghost">FULLSCREEN</button>
+          <button id="btn-help" class="btn btn-ghost">CONTROLS</button>
+        </div>
+      </div>
+      <div class="menu-foot">
+        <span>PHONE / TABLET READY</span>
+        <span class="dot"></span>
+        <span>BEST PLAYED LANDSCAPE</span>
+        <span class="dot"></span>
+        <span>WEBGL</span>
+      </div>
+    </section>
+
+    <section id="select" class="screen">
+      <header class="select-head">
+        <button id="btn-back" class="icon-btn" aria-label="Back">‹</button>
+        <div>
+          <div class="kicker">SELECT YOUR FIGHTER</div>
+          <div class="select-title">THE DRAGON TOURNAMENT</div>
+        </div>
+        <div class="select-round">BEST OF 3</div>
+      </header>
+
+      <div class="select-body">
+        <div class="fighter-nameplate">
+          <div id="sel-title" class="fighter-title">THE CRIMSON STORM</div>
+          <div id="sel-name" class="fighter-name">KAZE</div>
+          <div id="sel-bio" class="fighter-bio">A wandering shinobi whose blade-hand never misses.</div>
+          <div class="stats">
+            <div class="stat"><label>POWER</label><span class="stat-track"><i id="stat-power"></i></span></div>
+            <div class="stat"><label>SPEED</label><span class="stat-track"><i id="stat-speed"></i></span></div>
+            <div class="stat"><label>REACH</label><span class="stat-track"><i id="stat-reach"></i></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="roster">
+        <button id="roster-prev" class="roster-arrow" aria-label="Previous fighter">‹</button>
+        <div id="roster-list" class="roster-list"></div>
+        <button id="roster-next" class="roster-arrow" aria-label="Next fighter">›</button>
+      </div>
+
+      <footer class="select-foot">
+        <button id="btn-fight" class="btn btn-fight">FIGHT <span>›</span></button>
+      </footer>
+    </section>
+
+    <section id="hud" class="hud">
+      <div class="health-row">
+        <div class="fighter-hud left">
+          <div class="hud-name" id="hud-name-p">KAZE</div>
+          <div class="health-shell"><div class="health-chip" id="chip-p"></div><div class="health" id="hp-p"></div></div>
+          <div class="round-pips" id="pips-p"><i></i><i></i></div>
+        </div>
+        <div class="timer-wrap">
+          <div class="timer-ring"><svg viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="44"></circle><circle id="timer-arc" class="ring-fg" cx="50" cy="50" r="44"></circle></svg>
+            <span id="timer">60</span>
+          </div>
+          <div class="round-label" id="round-label">ROUND 1</div>
+        </div>
+        <div class="fighter-hud right">
+          <div class="hud-name" id="hud-name-o">RAIGA</div>
+          <div class="health-shell"><div class="health-chip" id="chip-o"></div><div class="health" id="hp-o"></div></div>
+          <div class="round-pips" id="pips-o"><i></i><i></i></div>
+        </div>
+      </div>
+
+      <div class="meter-row">
+        <div class="meter left"><label>SPIRIT</label><div class="meter-track"><i id="meter-p"></i></div></div>
+        <div class="meter right"><label>SPIRIT</label><div class="meter-track"><i id="meter-o"></i></div></div>
+      </div>
+
+      <div id="combo" class="combo"><b id="combo-count">0</b><span>HIT COMBO</span></div>
+      <div id="callout" class="callout"></div>
+      <button id="btn-pause" class="pause-btn" aria-label="Pause">II</button>
+    </section>
+
+    <section id="touch" class="touch">
+      <div id="stick" class="stick"><div id="stick-ring" class="stick-ring"></div><div id="stick-knob" class="stick-knob"></div><span>MOVE</span></div>
+      <div class="pad">
+        <button class="pad-btn punch" data-action="punch"><b>P</b><span>PUNCH</span></button>
+        <button class="pad-btn kick" data-action="kick"><b>K</b><span>KICK</span></button>
+        <button class="pad-btn block" data-action="block"><b>B</b><span>BLOCK</span></button>
+        <button class="pad-btn special" data-action="special"><b>S</b><span>SPIRIT</span></button>
+      </div>
+    </section>
+
+    <section id="banner" class="banner"><div class="banner-kicker" id="banner-kicker"></div><div class="banner-main" id="banner-main"></div><div class="banner-sub" id="banner-sub"></div></section>
+
+    <section id="pause" class="modal">
+      <div class="modal-card">
+        <div class="kicker">PAUSED</div>
+        <h2>DRAGON ARENA</h2>
+        <div class="modal-actions">
+          <button id="btn-resume" class="btn btn-primary">RESUME</button>
+          <button id="btn-restart" class="btn btn-ghost">RESTART FIGHT</button>
+          <button id="btn-quit" class="btn btn-ghost">QUIT TO MENU</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="help" class="modal">
+      <div class="modal-card wide">
+        <div class="kicker">CONTROLS</div>
+        <h2>FIGHT LIKE A DRAGON</h2>
+        <div class="help-grid">
+          <div><b>MOVE</b><span>Left stick / A D W S</span></div>
+          <div><b>PUNCH</b><span>P button / J</span></div>
+          <div><b>KICK</b><span>K button / K</span></div>
+          <div><b>BLOCK</b><span>B button / L</span></div>
+          <div><b>SPIRIT ART</b><span>S button / Space (full meter)</span></div>
+          <div><b>PAUSE</b><span>II button / Esc</span></div>
+        </div>
+        <p class="help-tip">Sidestep with up/down. Chain punches for combos. Blocking chips the Spirit meter. Winner takes two rounds.</p>
+        <button id="btn-help-close" class="btn btn-primary">GOT IT</button>
+      </div>
+    </section>
+
+    <section id="result" class="modal">
+      <div class="modal-card result-card">
+        <div class="kicker" id="result-kicker">TOURNAMENT COMPLETE</div>
+        <h2 id="result-title">VICTORY</h2>
+        <div id="result-sub" class="result-sub">KAZE CONQUERS THE DRAGON ARENA</div>
+        <div class="result-actions">
+          <button id="btn-rematch" class="btn btn-primary">REMATCH</button>
+          <button id="btn-choose" class="btn btn-ghost">CHANGE FIGHTER</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="toast" class="toast"></div>
+    <div id="rotate" class="rotate-hint">ROTATE YOUR DEVICE FOR THE FULL ARENA</div>
+  </div>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
