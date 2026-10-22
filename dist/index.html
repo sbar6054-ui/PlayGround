@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#79b84b" />
+    <meta name="description" content="Blockcraft is a pocket-sized voxel sandbox with touch controls, block building, lakes, forests and mountains." />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>Blockcraft — Pocket Voxel World</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2379b84b'/%3E%3Cpath d='M7 41h50v15H7z' fill='%23784d2b'/%3E%3Cpath d='M7 25L32 11l25 14-25 14z' fill='%238fd25c'/%3E%3C/svg%3E" />
+    <script type="module" crossorigin src="/assets/index-DH6da08d.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-B1SiRKMe.css">
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="game"></canvas>
+      <div class="vignette"></div>
+      <div id="underwater" class="underwater"></div>
+    </div>
+
+    <div id="start" class="screen start">
+      <div class="start-panel">
+        <div class="brand">
+          <img id="brandIcon" class="brand-icon" alt="" />
+          <h1>BLOCKCRAFT</h1>
+        </div>
+        <p class="tagline">A whole world in your pocket.</p>
+        <button id="play" class="play-button" type="button" disabled>
+          <span class="play-glyph"></span>
+          <span id="playLabel">Play</span>
+        </button>
+        <p id="loading" class="loading">Shaping the terrain…</p>
+        <div class="feature-row">
+          <span>Infinite blocks</span>
+          <span>Touch controls</span>
+          <span>Daylit voxels</span>
+        </div>
+        <div class="start-controls">
+          <div><b>Touch</b> Joystick to move · drag to look · buttons to mine &amp; build</div>
+          <div><b>Desktop</b> WASD · Space · Shift · click to capture mouse</div>
+        </div>
+      </div>
+      <div class="start-footer">Seeded world · built live in your browser</div>
+    </div>
+
+    <div id="hud" class="hud">
+      <div class="topbar">
+        <div class="world-pill">
+          <span class="dot"></span>
+          <span id="coords">0, 0</span>
+          <span class="pill-sep"></span>
+          <span id="seedLabel">Seed 90210</span>
+        </div>
+        <div class="top-actions">
+          <button id="soundBtn" class="icon-button" type="button" aria-label="Mute sound" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 9v6h4l5 4V5L8 9H4z" />
+              <path class="wave" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" />
+            </svg>
+          </button>
+          <button id="pauseBtn" class="icon-button" type="button" aria-label="Pause">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="6" y="5" width="4" height="14" rx="1" />
+              <rect x="14" y="5" width="4" height="14" rx="1" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div id="crosshair" class="crosshair">
+        <span class="ch-v"></span>
+        <span class="ch-h"></span>
+      </div>
+      <div id="toast" class="toast"></div>
+
+      <div id="hotbar" class="hotbar" role="toolbar" aria-label="Block selection"></div>
+      <div class="desktop-hint"><b>WASD</b> move · <b>Space</b> jump · <b>LMB</b> mine · <b>RMB</b> place</div>
+
+      <div id="touch" class="touch-controls">
+        <div id="joystick" class="joystick">
+          <div class="joystick-ring"></div>
+          <div id="knob" class="knob"></div>
+        </div>
+        <div class="touch-actions">
+          <button id="jumpBtn" class="touch-button jump-button" type="button" aria-label="Jump">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l7 8h-4v7H9v-7H5l7-8z" /></svg>
+          </button>
+          <div class="action-pair">
+            <button id="mineBtn" class="touch-button action-button" type="button" aria-label="Mine">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 20l7-7 2 2-7 7H4v-2z" />
+                <path d="M9 11c1-4 5-7 11-7-1 4-2 7-5 9l-2-2-4-.5V11z" />
+              </svg>
+            </button>
+            <button id="placeBtn" class="touch-button action-button" type="button" aria-label="Place block">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z" />
+                <path class="line" d="M4 7.5l8 4.5 8-4.5M12 12v9" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="pause" class="screen pause hidden">
+      <div class="pause-card">
+        <div class="pause-kicker">BLOCKCRAFT</div>
+        <h2>Paused</h2>
+        <button id="resumeBtn" class="play-button small" type="button">Resume</button>
+        <div class="pause-actions">
+          <button id="pauseSoundBtn" class="ghost-button" type="button">Sound: on</button>
+          <button id="fullscreenBtn" class="ghost-button" type="button">Fullscreen</button>
+          <button id="resetBtn" class="ghost-button danger" type="button">New world</button>
+        </div>
+        <div class="pause-help">
+          <p><b>Move</b> joystick or WASD</p>
+          <p><b>Look</b> drag the world or move the mouse</p>
+          <p><b>Mine / Build</b> center target, then tap or click</p>
+          <p><b>Blocks</b> 1–9 keys or the hotbar</p>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>
